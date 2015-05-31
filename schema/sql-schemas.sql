@@ -1,7 +1,6 @@
-CREATE DATABASE publications;
+CREATE DATABASE IF NOT EXISTS publications;
 USE publications;
 
--- CREATE ENTITIES ============================================================
 CREATE TABLE Author (name VARCHAR(100) NOT NULL PRIMARY KEY);
 
 CREATE TABLE Publication (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
@@ -37,45 +36,42 @@ CREATE TABLE Conference(name VARCHAR(100) NOT NULL PRIMARY KEY,
   start_date DATE NOT NULL
 );
 
--- CREATE RELATIONSHIPS =======================================================
-
 -- relates author entities with a publication entity
-CREATE TABLE Is_author_of(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT);
+CREATE TABLE Is_author_of(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+    author VARCHAR(100) NOT NULL,
+    publication INT NOT NULL
+);
 
-ALTER TABLE Is_author_of
-	ADD COLUMN fk_author VARCHAR(100) NOT NULL,
-	ADD FOREIGN KEY fk_author(fk_author)
-	REFERENCES Author(name)
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE;
-
-ALTER TABLE Is_author_of
-  ADD COLUMN fk_publication INT NOT NULL,
-	ADD FOREIGN KEY fk_publication(fk_publication)
-	REFERENCES Publication(id)
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE;
+    ALTER TABLE Is_author_of
+      /* foreign key for author entities */
+      ADD CONSTRAINT FK_author
+      FOREIGN KEY (author) REFERENCES Author(name)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE,
+      /* foreign key for publication entities */
+      ADD CONSTRAINT FK_publication_for_author
+      FOREIGN KEY (publication) REFERENCES Publication(id);
 
 -- relates a publication with a category of either journal || conference
-CREATE TABLE Is_category(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT);
+CREATE TABLE Is_category(id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  publication INT NOT NULL,
+  journal VARCHAR(100),
+  conference VARCHAR(100)
+);
 
-ALTER TABLE Is_category
-  ADD COLUMN fk_publication INT NOT NULL,
-	ADD FOREIGN KEY fk_publication(fk_publication)
-	REFERENCES Publication(id)
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE;
-
-ALTER TABLE Is_category
-  ADD COLUMN fk_journal VARCHAR(100) NOT NULL,
-	ADD FOREIGN KEY fk_journal(fk_journal)
-	REFERENCES Journal(name)
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE;
-
-ALTER TABLE Is_category
-  ADD COLUMN fk_conference VARCHAR(100) NOT NULL,
-	ADD FOREIGN KEY fk_conference(fk_conference)
-	REFERENCES Conference(name)
-	ON DELETE NO ACTION
-	ON UPDATE CASCADE;
+    ALTER TABLE Is_category
+      /* foreign key for publication entities */
+      ADD CONSTRAINT FK_publication_for_category
+      FOREIGN KEY (publication) REFERENCES Publication(id)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE,
+      /* foreign key for journal entities */
+      ADD CONSTRAINT FK_journal
+      FOREIGN KEY (journal) REFERENCES Journal(name)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE,
+      /* foreign key for conference entities*/
+      ADD CONSTRAINT fk_conference
+      FOREIGN KEY (conference) REFERENCES Conference(name)
+    	ON DELETE CASCADE
+    	ON UPDATE CASCADE;
