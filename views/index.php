@@ -16,8 +16,8 @@
 
 <body>
   <?php
-  // load navbar
-  require $_SERVER['DOCUMENT_ROOT'].'/includes/navbar.php';
+    // load navbar
+    require $_SERVER['DOCUMENT_ROOT'].'/includes/navbar.php';
   ?>
 
   <!-- MAIN -->
