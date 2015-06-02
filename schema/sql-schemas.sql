@@ -1,5 +1,5 @@
-CREATE DATABASE IF NOT EXISTS publications;
-USE publications;
+CREATE DATABASE IF NOT EXISTS publications_db;
+USE publications_db;
 
 CREATE TABLE Author (name VARCHAR(100) NOT NULL PRIMARY KEY);
 
