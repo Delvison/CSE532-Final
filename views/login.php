@@ -1,24 +1,28 @@
+<?php
+  define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
+?>
+
 <html>
 <head>
-  <link rel="stylesheet" type="text/css" href="css/bootstrap/css/bootstrap.min.css">
-  <link rel="stylesheet" type="text/css" href="css/style.css">
+  <link rel="stylesheet" type="text/css" href="../css/bootstrap/css/bootstrap.css">
+  <link rel="stylesheet" type="text/css" href="../css/style.css">
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
-  <script src="js/jquery-2.1.3.min.js"></script>
 </head>
 <body>
 
   <?php
-  // load navbar
-  require $_SERVER['DOCUMENT_ROOT'].'/idea/includes/navbar.php';
+    // load navbar
+    require PROJ_PATH.'/includes/navbar.php';
   ?>
 
   <div class="hero-unit page" style="margin-right:20%;margin-left:20%">
     <div class="container-fluid">
       <h2>Login</h2>
-      <form action="controllers/login_controller.php" method="POST">
+      <form action="../controllers/login_controller.php" method="POST">
         <input style="height:30px" type="text" placeholder="username" name="username" />
       </br>
       <input style="height:30px" type="password" placeholder="password" name="password" />
@@ -34,9 +38,10 @@
 </div>
 
 <?php
-// load navbar
-require $_SERVER['DOCUMENT_ROOT'].'/idea/includes/footer.php';
+  // load footer
+  require PROJ_PATH.'/includes/footer.php';
 ?>
+
 
 <script>
 $(document).ready(function()
