@@ -118,7 +118,7 @@ function logout()
   session_id('mySessionID');
   session_start();
   session_destroy();
-  header("Location: ../index.php");
+  header("Location: ../views/index.php");
   die();
 }
 ?>

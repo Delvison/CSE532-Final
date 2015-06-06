@@ -19,7 +19,7 @@
           echo '<li><a href="login.php">Login</a></li>';
         } else{
           echo '<li><div style="margin-top:10px"><div style="padding-right:10px">'.$_SESSION['username']."</div></li> ";
-          echo '  <li><a href="controllers/login_controller.php'.
+          echo '  <li><a href="../controllers/login_controller.php'.
           '?logout=true">Logout</a></div></li>';
         }
         ?>
