@@ -17,8 +17,8 @@
   ?>
   <div class="hero-unit page" style="margin-right:20%;margin-left:20%">
     <div class="container-fluid">
-      <h2>Signup for Idea!</h2>
-      <form action="controllers/login_controller.php" method="POST">
+      <h2>Signup!</h2>
+      <form action="../controllers/login_controller.php" method="POST">
         <input style="height:30px" type="text" placeholder="username" name="username" id="username" />
       </br>
       <p>

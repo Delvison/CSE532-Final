@@ -28,12 +28,12 @@ function send_query($query, $db_hostname, $db_user, $db_password, $db_use)
 {
   $db = new mysqli($db_hostname,$db_user,$db_password,$db_use);
   if ($db->connect_errno > 0){
-    //die('Unable to connect to database');
+    die('Unable to connect to database');
     return FALSE;
     // TODO: Redirect appropriately
   }
   if ( !$result = $db->query($query) ){
-    //die('The was an error with the query '. $query);
+    die('The was an error with the query '. $query);
     mysqli_close($db);
     return FALSE;
     // TODO: Redirect appropriately

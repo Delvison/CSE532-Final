@@ -47,11 +47,15 @@
 $(document).ready(function()
 {
   var error = '<?php echo $_GET['error']; ?>';
+  var m = '<?php echo $_GET['m']; ?>';
   if (error == 'inc_pass') {
     alert("Username or password is incorrect");
   }
   if (error == 'login_first'){
     alert("Oops! Please login first.");
+  }
+  if (m == 'successfully_created'){
+    alert("Success! Username created.");
   }
 });
 </script>

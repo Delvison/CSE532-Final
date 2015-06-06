@@ -9,6 +9,12 @@ include_once $_SERVER['DOCUMENT_ROOT'].'/idea/lib/error_reporing.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/idea/lib/db_helper.php';
 include_once $_SERVER['DOCUMENT_ROOT'].'/idea/config/db_config.php';
 
+define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
+include_once PROJ_PATH.'lib/login_helper.php';
+include_once PROJ_PATH.'lib/db_helper.php';
+include_once PROJ_PATH.'lib/error_reporting.php';
+include_once PROJ_PATH.'config/db_config.php';
+
 /**
 * Creates a user in the database.
 * @param string $username Desired username
@@ -37,21 +43,22 @@ function create_user($username, $password, $email, $is_admin)
 
   // check if users exist, if not -- make user admin
   $count_query = "SELECT COUNT(*) FROM $user_tb;";
-  $count_result = receive_query($query, $db_hostname, $db_user, $db_password,
-                  $publications_db)->fetch_aray();
-  if ($count_result['username'] == 0)
+  $count_result = receive_query($count_query, $db_hostname, $db_user, $db_password,
+                  $publications_db)->fetch_array();
+  if ($count_result[0] == 0)
   {
-    $is_admin = "true";
+    $is_admin = true;
+    debug("No Users in database.");
   }
 
   // create query
   $query = "INSERT INTO $user_tb (username, email, salt, password,".
   " is_admin, date_created) VALUES".
-  " ($username','$email','$hash','$salt','$is_admin','$date');";
+  " ('$username','$email','$salt','$hash','$is_admin','$date');";
 
   // called from lib/db_helper.php
   return send_query($query, $db_hostname, $db_user, $db_password,
-  $members_db);
+  $publications_db);
 }
 
 /**
