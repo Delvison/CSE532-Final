@@ -1,4 +1,9 @@
 <?php
+
+// includes
+define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
+include_once PROJ_PATH.'lib/error_reporting.php';
+
 /**
 * This function is responsible for handling errors. Redirects to next
 * location after a defined wait time
@@ -77,6 +82,30 @@ function check_email($str)
     return TRUE;
   } else {
     return FALSE;
+  }
+}
+
+/**
+* Produces an html dropdown list
+* @param String $filename path of file to be read
+* @param String $id html id element name
+* @author Delvison Castillo
+*/
+function produce_dropdown($filename,$id)
+{
+  $read = fopen($filename,"r");
+  if ($read)
+  {
+    $str = '<select id="'.$id.'>';
+    while (($line = fgets($read)) !== false)
+    {
+      $str = $str . '<option value="'.$line.'">'.$line.'</option>';
+    }
+    $str = $str . '</select>';
+    echo $str;
+  } else {
+    // error has occurred
+     debug('error');
   }
 }
 

@@ -22,10 +22,11 @@ CREATE TABLE Publication_metadata (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   issue VARCHAR(10),
   start_pg INT,
   end_pg INT,
-  impact_factor FLOAT
+  impact_factor FLOAT,
+  country VARCHAR(50)
 );
 
-CREATE TABLE Country (name VARCHAR(30) NOT NULL PRIMARY KEY);
+-- CREATE TABLE Country (name VARCHAR(30) NOT NULL PRIMARY KEY);
 
 CREATE TABLE Journal(name VARCHAR(100) NOT NULL PRIMARY KEY,
   category VARCHAR(10),
