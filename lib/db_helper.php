@@ -2,6 +2,11 @@
 /**
 * The purpose of this script is to act as an interface to a mysql server
 */
+
+if (!defined('PROJ_PATH')) define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
+include_once PROJ_PATH.'lib/functions.php';
+include_once PROJ_PATH.'lib/error_reporting.php';
+
 /**
 * Creates all neccessary databases if they do not exist
 * @param string $db_hostname Mysql hostname to connect to
@@ -33,11 +38,13 @@ function send_query($query, $db_hostname, $db_user, $db_password, $db_use)
     // TODO: Redirect appropriately
   }
   if ( !$result = $db->query($query) ){
+    debug($query);
     die('The was an error with the query '. $query);
     mysqli_close($db);
     return FALSE;
     // TODO: Redirect appropriately
   } else {
+    debug("Query success");
     mysqli_close($db);
     return TRUE;
   }

@@ -96,7 +96,7 @@ function produce_dropdown($filename,$id)
   $read = fopen($filename,"r");
   if ($read)
   {
-    $str = '<select id="'.$id.'>';
+    $str = '<select id="'.$id.'" name="'.$id.'">';
     while (($line = fgets($read)) !== false)
     {
       $str = $str . '<option value="'.$line.'">'.$line.'</option>';
@@ -105,7 +105,7 @@ function produce_dropdown($filename,$id)
     echo $str;
   } else {
     // error has occurred
-     debug('error');
+     debug('error reading countries');
   }
 }
 

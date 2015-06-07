@@ -22,7 +22,7 @@
   $publication_tb = "Publication";
   $user_tb = "User";
   $publication_metadata_tb = "Publication_metadata";
-  $country_tb = "Country";
+  // $country_tb = "Country";
   $journal_tb = "Journal";
   $conference_tb = "Conference";
   $is_author_of_tb = "Is_author_of";

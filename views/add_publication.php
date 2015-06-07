@@ -26,28 +26,29 @@
           <div class="form-group">
             <label for="inputArtTitle" class="control-label col-xs-2">Article Title</label>
             <div class="col--10">
-              <input type="text" class="form-control" id="inputArtTitle" placeholder="Article Title">
+              <input type="text" class="form-control" id="inputArtTitle" name="inputArtTitle" placeholder="Article Title">
             </div>
           </div>
           <!-- abstract -->
           <div class="form-group">
             <label for="inputAbstract" class="control-label col-xs-2">Abstract</label>
             <div class="col--10">
-              <textarea class="form-control" id="inputAbstract" placeholder="Abstract"></textarea>
+              <textarea class="form-control" id="inputAbstract" name="inputAbstract" placeholder="Abstract"></textarea>
             </div>
           </div>
           <!-- date published -->
           <div class="form-group">
             <label for="inputPubDate" class="control-label col-xs-2">Date Published</label>
             <div class="col--10">
-              <input type="text" class="form-control" id="inputPubDate" placeholder="Date Published">
+              <input type="date" class="form-control" id="inputPubDate" name="inputPubDate" placeholder="YYYY-MM-DD">
             </div>
           </div>
-          <!-- vol -->
+          <!-- authors -->
           <div class="form-group">
-            <label for="inputPubDate" class="control-label col-xs-2">Date Published</label>
+            <label for="inputAuthors" class="control-label col-xs-2">Authors</label>
             <div class="col--10">
-              <input type="text" class="form-control" id="inputPubDate" placeholder="Date Published">
+              <input type="text" class="form-control" id="inputAuthors" name="inputAuthors"
+              placeholder="Authors(comma separated)">
             </div>
           </div>
           <!-- countries -->
@@ -57,6 +58,7 @@
               <?php produce_dropdown(PROJ_PATH.'resources/countries.txt','inputCountry'); ?>
             </div>
           </div>
+          <!-- submit btn -->
           <div class="form-group">
             <div class="col-xs-offset-2 col-xs-10">
               <button type="submit" class="btn btn-primary">Submit</button>
@@ -71,13 +73,11 @@
 </html>
 
 <?php
-  // article title
-  // abstract
-  // publication date
+
   // start_pg
   // end_pg
   // impact_factor
-  // country
+
   // journal
     // vol
     // issue

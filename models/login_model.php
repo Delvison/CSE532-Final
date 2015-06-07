@@ -4,12 +4,7 @@
 * This script defines all functions responsible for dealing with the user model.
 */
 
-include_once $_SERVER['DOCUMENT_ROOT'].'/idea/lib/passwd.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/idea/lib/error_reporing.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/idea/lib/db_helper.php';
-include_once $_SERVER['DOCUMENT_ROOT'].'/idea/config/db_config.php';
-
-define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
+if (!defined('PROJ_PATH')) define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
 include_once PROJ_PATH.'lib/login_helper.php';
 include_once PROJ_PATH.'lib/db_helper.php';
 include_once PROJ_PATH.'lib/error_reporting.php';

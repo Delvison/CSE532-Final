@@ -6,7 +6,7 @@
 */
 
 // includes
-define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
+if (!defined('PROJ_PATH')) define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
 include PROJ_PATH.'models/login_model.php';
 include_once PROJ_PATH.'lib/functions.php';
 include_once PROJ_PATH.'lib/login_helper.php';
