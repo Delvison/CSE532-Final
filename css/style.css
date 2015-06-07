@@ -8,7 +8,7 @@
 }
 
 .page {
-  margin: 20px;
+  margin: 5px;
 }
 
 .sidebar {
@@ -26,10 +26,6 @@
   background: #fafafa;
   border-radius: 5px;
   margin-bottom: 15px;
-}
-
-input {
-  max-width: 100%;
 }
 
 .wide {
@@ -56,4 +52,18 @@ input {
   white-space:no-wrap;
   overflow:hidden;
   text-align:center;
+}
+
+.style-4 input[type="text"] {
+  padding: 10px;
+  border: none;
+  border-bottom: solid 2px #c9c9c9;
+  transition: border 0.3s;
+  height: 30px;
+  width: 300px !important;
+}
+
+.style-4 input[type="text"]:focus,
+.style-4 input[type="text"].focus {
+  border-bottom: solid 2px #969696;
 }

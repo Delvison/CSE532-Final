@@ -68,7 +68,7 @@ function receive_query($query, $db_hostname, $db_user, $db_password, $db_use)
     die();
   }
   if ( !$result = $db->query($query) ){
-    die('The was an error with the query');
+    die('The was an error with the query '.$query);
     header("Location: error.php");
     die();
   } else {

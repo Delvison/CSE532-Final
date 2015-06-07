@@ -3,6 +3,8 @@
 // includes
 define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
 include_once PROJ_PATH.'lib/error_reporting.php';
+include_once PROJ_PATH.'lib/db_helper.php';
+include_once PROJ_PATH.'config/db_config.php';
 
 /**
 * This function is responsible for handling errors. Redirects to next
@@ -109,4 +111,41 @@ function produce_dropdown($filename,$id)
   }
 }
 
+
+/**
+* Produce a table of all publications unfiltered
+* @author Delvison Castillo
+*/
+function all_publications_table()
+{
+  // global variables from config/db_config.php
+  global $db_hostname; // mysql database hostname
+  global $db_user; // mysql user
+  global $db_password; // mysql password
+  global $publications_db; // database of publications
+  global $publication_tb;
+  global $publication_metadata_tb;
+
+  // query for all publications
+  // $query = "SELECT * FROM $publication_tb, $publication_metadata_tb WHERE $publication_tb.id = $publication_metadata_tb.id;";
+  $query = "SELECT * FROM $publication_metadata_tb;";
+  $receive = receive_query($query,$db_hostname,$db_user,$db_password,
+            $publications_db);
+  $result = $receive->fetch_array();
+
+  var_dump($result);
+  if (sizeof($result) > 0 )
+  {
+    $str = "<table>";
+    for($i = 0; $i < sizeof($result)/2; $i++)
+    {
+      // echo $result[$i]." ";
+      debug($result['country']);
+    }
+    $str = $str . "</table>";
+  } else {
+    $str = "NO RESULTS";
+  }
+  echo $str;
+}
 ?>

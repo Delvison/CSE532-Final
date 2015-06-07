@@ -11,7 +11,7 @@
     <link rel="stylesheet" type="text/css" href="../css/style.css">
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap.min.css">
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css">
+    <!-- <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/css/bootstrap-theme.min.css"> -->
     <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
     <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.1/js/bootstrap.min.js"></script>
   </head>
@@ -19,35 +19,35 @@
   <body>
     <?php require PROJ_PATH.'/includes/navbar.php'; ?>
     <div class="container-fluid">
-      <div class="span8">
+      <div class="span8 offset2">
         <form class="form-horizontal" action="../controllers/add_publication_controller.php"
         method="POST">
           <!-- article title -->
           <div class="form-group">
             <label for="inputArtTitle" class="control-label col-xs-2">Article Title</label>
             <div class="col--10">
-              <input type="text" class="form-control" id="inputArtTitle" name="inputArtTitle" placeholder="Article Title">
+              <input type="text" class="style-4" id="inputArtTitle" name="inputArtTitle" placeholder="Article Title">
             </div>
           </div>
           <!-- abstract -->
           <div class="form-group">
             <label for="inputAbstract" class="control-label col-xs-2">Abstract</label>
             <div class="col--10">
-              <textarea class="form-control" id="inputAbstract" name="inputAbstract" placeholder="Abstract"></textarea>
+              <textarea class="style-4" id="inputAbstract" name="inputAbstract" placeholder="Abstract"></textarea>
             </div>
           </div>
           <!-- date published -->
           <div class="form-group">
             <label for="inputPubDate" class="control-label col-xs-2">Date Published</label>
             <div class="col--10">
-              <input type="date" class="form-control" id="inputPubDate" name="inputPubDate" placeholder="YYYY-MM-DD">
+              <input type="date" class="style-4" id="inputPubDate" name="inputPubDate" placeholder="YYYY-MM-DD">
             </div>
           </div>
           <!-- authors -->
           <div class="form-group">
             <label for="inputAuthors" class="control-label col-xs-2">Authors</label>
             <div class="col--10">
-              <input type="text" class="form-control" id="inputAuthors" name="inputAuthors"
+              <input type="text" class="style-4" id="inputAuthors" name="inputAuthors"
               placeholder="Authors(comma separated)">
             </div>
           </div>
