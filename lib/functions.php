@@ -139,7 +139,9 @@ function all_publications_table()
   $receive = receive_query($query,$db_hostname,$db_user,$db_password,
             $publications_db);
 
-  $str = "<table border='1' class='table'>";
+  $str = "<table border='1' class='table mytable' id='mytable' name='mytable
+
+  </tbody>'>";
   $str .= "<tr>".
   "<th>Article Title</th>".
   "<th>Abstract</th>".
@@ -149,7 +151,7 @@ function all_publications_table()
   "</tr>";
   while ($result = $receive->fetch_assoc())
   {
-    $str.= '<tr>';
+    $str.= '<tbody class="fbody"><tr>';
     // var_dump($result);
     foreach($result as $val)
     {
@@ -160,7 +162,7 @@ function all_publications_table()
         $str.= "<td>".$val."</td>";
       }
     }
-    $str.= '</tr>';
+    $str.= '</tr></tbody>';
   }
   $str = $str . "</table>";
   echo $str;
