@@ -1,4 +1,6 @@
 <?php
+  session_id('mySessionID');
+  session_start();
   define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
   include_once PROJ_PATH.'lib/functions.php';
 ?>
@@ -16,8 +18,14 @@
 
   <body>
     <?php require PROJ_PATH.'/includes/navbar.php'; ?>
-    <?php all_publications_table(); ?>
-    <?php require PROJ_PATH.'/includes/footer.php'; ?>
+    <div>
+      <input type="text" class="span5 search-query">
+    </input>
+      <!-- <button type="submit" class="btn"><i class="icon-search"></i></button> -->
+    </div>
+    <div>
+      <?php all_publications_table(); ?>
+      <?php require PROJ_PATH.'/includes/footer.php'; ?>
+    </div>
   </body>
-
 </html>

@@ -8,6 +8,7 @@ if (!defined('PROJ_PATH')) define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE53
 include_once PROJ_PATH.'lib/login_helper.php';
 include_once PROJ_PATH.'lib/db_helper.php';
 include_once PROJ_PATH.'lib/error_reporting.php';
+include_once PROJ_PATH.'lib/functions.php';
 include_once PROJ_PATH.'config/db_config.php';
 
 /**
@@ -44,6 +45,12 @@ function create_user($username, $password, $email, $is_admin)
   {
     $is_admin = true;
     debug("No Users in database.");
+  }
+
+  // check if email is valid
+  if (!check_email($email)) {
+    // TODO: redirect with error back to registration
+    debug("invalid email");
   }
 
   // create query

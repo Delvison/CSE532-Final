@@ -1,9 +1,14 @@
 <?php
+  session_id('mySessionID');
+  session_start();
   define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
   include_once PROJ_PATH.'lib/functions.php';
   // TODO: redirect if no user is logged in
-  // if (!isset($_SESSION['username'])) { }
+  if (!isset($_SESSION['username'])) {
+    header("Location: ../views/login.php");
+  }
 ?>
+
 
 <html>
   <head>
@@ -21,7 +26,7 @@
     <div class="container-fluid">
       <div class="span8 offset2">
         <form class="form-horizontal" action="../controllers/add_publication_controller.php"
-        method="POST">
+        method="POST" enctype="multipart/form-data">
           <!-- article title -->
           <div class="form-group">
             <label for="inputArtTitle" class="control-label col-xs-2">Article Title</label>
@@ -58,6 +63,14 @@
               <?php produce_dropdown(PROJ_PATH.'resources/countries.txt','inputCountry'); ?>
             </div>
           </div>
+          <!-- file upload -->
+          <div class="form-group">
+            <label for="inputFile" class="control-label col-xs-2">PDF file</label>
+            <div class="col--10">
+              <input type="file" name="inputFile" id="Inputfile">
+            </div>
+          </div>
+          <input type="hidden" name="inputUser" value='<?php echo $_SESSION['username']; ?>'>
           <!-- submit btn -->
           <div class="form-group">
             <div class="col-xs-offset-2 col-xs-10">
@@ -69,7 +82,6 @@
     </div>
     <?php require PROJ_PATH.'/includes/footer.php'; ?>
   </body>
-
 </html>
 
 <?php

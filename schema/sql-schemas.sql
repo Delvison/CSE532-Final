@@ -1,14 +1,6 @@
 CREATE DATABASE IF NOT EXISTS publications_db;
 USE publications_db;
 
-CREATE TABLE Author (name VARCHAR(100) NOT NULL PRIMARY KEY);
-
-CREATE TABLE Publication (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  title VARCHAR(100) NOT NULL,
-  abstract TEXT NOT NULL,
-  publication_date DATE NOT NULL
-);
-
 CREATE TABLE User (username VARCHAR(30) NOT NULL PRIMARY KEY,
   email VARCHAR(40) NOT NULL,
   salt VARCHAR(8) NOT NULL, /* salt used for hashing password */
@@ -17,13 +9,30 @@ CREATE TABLE User (username VARCHAR(30) NOT NULL PRIMARY KEY,
   date_created TIMESTAMP DEFAULT CURRENT_TIMESTAMP
 );
 
+CREATE TABLE Author (name VARCHAR(100) NOT NULL PRIMARY KEY);
+
+CREATE TABLE Publication (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
+  title VARCHAR(100) NOT NULL,
+  abstract TEXT NOT NULL,
+  publication_date DATE NOT NULL,
+  user_posted VARCHAR(30)
+);
+
+    ALTER TABLE Publication
+      /* foreign key for user who posted a publication */
+      ADD CONSTRAINT FK_user
+      FOREIGN KEY (user_posted) REFERENCES User(username)
+      ON DELETE CASCADE
+      ON UPDATE CASCADE;
+
 CREATE TABLE Publication_metadata (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
   vol VARCHAR(10),
   issue VARCHAR(10),
   start_pg INT,
   end_pg INT,
   impact_factor FLOAT,
-  country VARCHAR(50)
+  country VARCHAR(50),
+  file_path TINYTEXT
 );
 
 -- CREATE TABLE Country (name VARCHAR(30) NOT NULL PRIMARY KEY);

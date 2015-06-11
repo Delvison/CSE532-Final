@@ -127,25 +127,112 @@ function all_publications_table()
   global $publication_metadata_tb;
 
   // query for all publications
-  // $query = "SELECT * FROM $publication_tb, $publication_metadata_tb WHERE $publication_tb.id = $publication_metadata_tb.id;";
-  $query = "SELECT * FROM $publication_metadata_tb;";
+  $query = "SELECT ".
+  "$publication_tb.title,".
+  "$publication_tb.abstract,".
+  "$publication_tb.publication_date,".
+  "$publication_metadata_tb.country,".
+  "$publication_tb.user_posted ".
+  "FROM $publication_tb, $publication_metadata_tb".
+  " WHERE $publication_tb.id = $publication_metadata_tb.id;";
+
   $receive = receive_query($query,$db_hostname,$db_user,$db_password,
             $publications_db);
-  $result = $receive->fetch_array();
 
-  var_dump($result);
-  if (sizeof($result) > 0 )
+  $str = "<table border='1' class='table'>";
+  $str .= "<tr>".
+  "<th>Article Title</th>".
+  "<th>Abstract</th>".
+  "<th>Date Published</th>".
+  "<th>Country</th>".
+  "<th>User_Posted</th>".
+  "</tr>";
+  while ($result = $receive->fetch_assoc())
   {
-    $str = "<table>";
-    for($i = 0; $i < sizeof($result)/2; $i++)
+    $str.= '<tr>';
+    // var_dump($result);
+    foreach($result as $val)
     {
-      // echo $result[$i]." ";
-      debug($result['country']);
+      if (strcmp($val,$result['title']) == 0)
+      {
+        $str.= "<td><a href='view_publication.php?t=$val'>$val</a></td>";
+      } else {
+        $str.= "<td>".$val."</td>";
+      }
     }
-    $str = $str . "</table>";
-  } else {
-    $str = "NO RESULTS";
+    $str.= '</tr>';
   }
+  $str = $str . "</table>";
   echo $str;
+}
+
+function upload_file($user_id)
+{
+  // to receive a file upload use $_FILES
+  // FILES explained: http://php.net/manual/en/reserved.variables.files.php
+  // define maxfilesize
+  // TODO: correct max filesize
+  define("MAX_FILESIZE", 100000000);
+
+  // receive upload
+  $fieldname = "inputFile";
+  // echo "file: " . $_FILES[$fieldname]['name'];
+  // echo "<br/>type: " . $_FILES[$fieldname]['type'];
+  // echo "<br/>temp_name: " . $_FILES[$fieldname]['tmp_name'];
+  // make a note of the current working directory
+  $dir_proj = str_replace(basename(__DIR__).'/',
+  '',str_replace(basename($_SERVER['PHP_SELF']), '',
+  $_SERVER['PHP_SELF']));
+  // echo "<br/> dir self: ". $dir_proj;
+  // make a note of the directory that will recieve the uploaded file
+  $uploadsDirectory = PROJ_PATH . 'uploads/';
+  // echo "<br/> uploads directory: ".$uploadsDirectory;
+  // make a note of the location of the upload form in case we need it
+  // TODO: correct location of upload form
+  $uploadForm = PROJ_PATH . 'views/add_publication.php';
+  // echo "<br/>upload form: " . $uploadForm;
+  // possible errors
+  $errors = array(1 => 'max file size exceeeded',
+                  2 => 'html form max file size exceeded',
+                  3 => 'file upload was only partial',
+                  4 => 'no file was attached');
+  // check for PHP's built-in uploading errors
+  ($_FILES[$fieldname]['error'] == 0)
+    or error($errors[$_FILES[$fieldname]['error']], $uploadForm, TRUE, 5);
+  // check that the file we are working on really was the subject of
+  // an HTTP upload
+  @is_uploaded_file($_FILES[$fieldname]['tmp_name'])
+    or error('not an HTTP upload', $uploadForm, TRUE, 5);
+  // // check that user has a folder to house uploads. Create if not.
+  // create_user_dir($uploadsDirectory = $uploadsDirectory . $user_id ."/")
+  //   or error('insuffiecient permission to create dir', $uploadForm, TRUE, 5);
+  // make a unique filename for the uploaded file and check it is not already
+  // taken... if it is already taken keep trying until we find a vacant one
+  // sample filename: 1140732936-filename.jpg
+  $uploadFilename = create_unique_filename($uploadsDirectory,
+  $_FILES[$fieldname]['name']);
+  //echo "<br/>upload_filename: ". $uploadFilename;
+  // move the file to its final location with unique filename
+  // ensure that proper permissions are set:
+  // sudo chown -R www-data:www-data /var/www
+  @move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename)
+    or error('receiving directory insuffiecient permission', $uploadForm,
+    TRUE, 5);
+  // image successfully received
+  // TODO: redirect appropriately
+  return $uploadFilename;
+}
+
+/**
+* Creates a user directory for images if it doesnt already exist
+* @param String $path Absolute path to the users image directory
+* @author Delvison Castillo delvisoncastillo@gmail.com
+*/
+function create_user_dir($path)
+{
+  if (!file_exists($path)){
+    mkdir($path,0777,true);
+  }
+  return true;
 }
 ?>

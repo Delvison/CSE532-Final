@@ -1,4 +1,6 @@
 <?php
+  session_id('mySessionID');
+  session_start();
   define('PROJ_PATH', $_SERVER['DOCUMENT_ROOT'].'/CSE532-Final/');
 ?>
 

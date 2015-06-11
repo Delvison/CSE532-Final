@@ -19,15 +19,20 @@ $abstract = $_POST['inputAbstract'];
 $pubDate = $_POST['inputPubDate'];
 $authors = $_POST['inputAuthors']; // multiple
 $country = $_POST['inputCountry'];
+$user = $_POST['inputUser'];
 
-if ( add_publication($artTitle, $abstract, $pubDate) )
+$file_path = upload_file($user);
+
+if ( add_publication($artTitle, $abstract, $pubDate, $user) )
 {
-  add_publication_metadata(NULL,NULL,NULL,NULL,NULL,$country);
+  add_publication_metadata(NULL,NULL,NULL,NULL,NULL,$country,$file_path);
   // TODO: redirect appropriately
   echo 'success';
+  header("Location: ../views/view_all.php?status=success");
 } else {
   debug("error adding publication");
 }
+
 
 
 ?>
