@@ -21,11 +21,17 @@ $authors = $_POST['inputAuthors']; // multiple
 $country = $_POST['inputCountry'];
 $user = $_POST['inputUser'];
 
+// upload file
 $file_path = upload_file($user);
 
-if ( add_publication($artTitle, $abstract, $pubDate, $user) )
+// get authors
+$authors_array = explode(",",$authors);
+
+if ( add_publication($artTitle, $abstract, $pubDate, $user) &&
+    !is_null($file_path) )
 {
   add_publication_metadata(NULL,NULL,NULL,NULL,NULL,$country,$file_path);
+  add_publication_authors($authors_array);
   // TODO: redirect appropriately
   echo 'success';
   header("Location: ../views/view_all.php?status=success");

@@ -52,6 +52,22 @@ $impact_factor,$country, $filepath)
 
 function add_publication_authors($authors,$article_title)
 {
+  // global variables from config/db_config.php
+  global $db_hostname; // mysql database hostname
+  global $db_user; // mysql user
+  global $db_password; // mysql password
+  global $publications_db; // database of publications
+  global $author_tb;
+  global $is_author_of_tb;
+
+  foreach($authors as $author)
+  {
+    $query = "INSERT into $author_tb (name) VALUES ('$author');";
+    // called from lib/db_helper.php
+    send_query($query, $db_hostname, $db_user, $db_password,
+    $publications_db);
+    // TODO: add is_author_of
+  }
 
 }
 
