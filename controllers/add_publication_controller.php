@@ -13,32 +13,63 @@ include_once PROJ_PATH.'lib/error_reporting.php';
 include_once PROJ_PATH.'config/db_config.php';
 include_once PROJ_PATH.'models/publication_model.php';
 
-// get params
-$artTitle = $_POST['inputArtTitle'];
-$abstract = $_POST['inputAbstract'];
-$pubDate = $_POST['inputPubDate'];
-$authors = $_POST['inputAuthors']; // multiple
-$country = $_POST['inputCountry'];
-$user = $_POST['inputUser'];
+ini_set('display_startup_errors',1);
+ini_set('display_errors',1);
+error_reporting(-1);
 
-// upload file
-$file_path = upload_file($user);
+try {
+  // get params
+  $artTitle = $_POST['inputArtTitle'];
+  $abstract = $_POST['inputAbstract'];
+  $pubDate = $_POST['inputPubDate'];
+  $authors = $_POST['inputAuthors']; // multiple
+  $country = $_POST['inputCountry'];
+  $user = $_POST['inputUser'];
+  $vol = 'NULL';
+  $issue = 'NULL';
+  $startPg = 'NULL';
+  $endPg = 'NULL';
 
-// get authors
-$authors_array = explode(",",$authors);
+  if (isset($_POST['inputVol'])) $vol = $_POST['inputVol'];
+  if (isset($_POST['inputIssue'])) $issue = $_POST['inputIssue'];
+  if (isset($_POST['inputStartPg'])) $startPg = $_POST['inputStartPg'];
+  if (isset($_POST['inputEndPg'])) $endPg = $_POST['inputEndPg'];
 
-if ( add_publication($artTitle, $abstract, $pubDate, $user) &&
-    !is_null($file_path) )
-{
-  add_publication_metadata(NULL,NULL,NULL,NULL,NULL,$country,$file_path);
-  add_publication_authors($authors_array);
-  // TODO: redirect appropriately
-  echo 'success';
-  header("Location: ../views/view_all.php?status=success");
-} else {
-  debug("error adding publication");
+  // upload file
+  $file_path = upload_file($user);
+
+  // // get authors
+  $authors_array = explode(",",$authors);
+
+  //if publication was added and file was uploaded
+  if ( add_publication($artTitle, $abstract, $pubDate, $user)
+      && is_null($file_path)
+  {
+    // get publication id
+    $pub_id = get_publication_id($artTitle);
+
+    // add metadata
+    add_publication_metadata($vol,,$issue,$startPg,$endPg,$country,$file_path);
+    // add authors
+    add_publication_authors($authors_array);
+    // check if a conference or journal
+    if (isset($_POST['inputConfRadio']))
+    {
+      $confName = $_POST['inputConfName'];
+      $confDate = $_POST['inputConfDate'];
+      add_conference($pub_id,$confName,$confDate);
+    } else {
+      $jourName = $_POST['inputJourName'];
+      $isbn = $POST['inputISBN'];
+      add_journal($pub_id,$jourName,$isbn);
+    }
+    header("Location: ../views/view_all.php?status=success");
+  } else {
+    debug("error adding publication");
+  }
+} catch (Exception $e) {
+  //TODO: handle errors correctly
+  debug($e->getMessage());
 }
-
-
 
 ?>

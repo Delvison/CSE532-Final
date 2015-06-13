@@ -5,7 +5,7 @@
   include_once PROJ_PATH.'lib/functions.php';
   // TODO: redirect if no user is logged in
   if (!isset($_SESSION['username'])) {
-    header("Location: ../views/login.php");
+    header("Location: ../views/login.php?error=login_first");
   }
 ?>
 
@@ -63,6 +63,81 @@
               <?php produce_dropdown(PROJ_PATH.'resources/countries.txt','inputCountry'); ?>
             </div>
           </div>
+          <!-- conference or journal -->
+          <div class="form-group">
+            <label for="type" class="control-label col-xs-2">Type</label>
+            <div id="type">
+              <input type="radio" class="radio" name="inputConfRadio" id="inputConfRadio" value="false" />
+              <label for="inputConfRadio">Conference</label>
+              <input type="radio" class="radio" name="inputJourRadio" id="inputJourRadio" value="false" />
+              <label for="inputJourRadio">Journal</label>
+          </div>
+          <!-- div for conference name -->
+          <div id='confInfo'>
+            <!-- conference title -->
+            <div class="form-group">
+              <label for="inputConfName" class="control-label col-xs-2">Conference Name</label>
+              <div class="col--10">
+                <input type="text" class="style-4" id="inputConfName" name="inputConfName" placeholder="Conference Name">
+              </div>
+            </div>
+            <!-- date of conference -->
+            <div class="form-group">
+              <label for="inputConfDate" class="control-label col-xs-2">Conference Date</label>
+              <div class="col--10">
+                <input type="date" class="style-4" id="inputConfDate" name="inputConfDate" placeholder="YYYY-MM-DD">
+              </div>
+            </div>
+          </div>
+          <!-- div for journal info -->
+          <div id='jourInfo'>
+            <!-- journal title -->
+            <div class="form-group">
+              <label for="inputJourName" class="control-label col-xs-2">Journal Name</label>
+              <div class="col--10">
+                <input type="text" class="style-4" id="inputJourName" name="inputJourName" placeholder="Journal Name">
+              </div>
+            </div>
+            <!-- ISBN -->
+            <div class="form-group">
+              <label for="inputISBN" class="control-label col-xs-2">ISBN</label>
+              <div class="col--10">
+                <input type="text" class="style-4" id="inputISBN" name="inputISBN" placeholder="ISBN">
+              </div>
+            </div>
+          </div>
+          <!-- vol -->
+          <div class="form-group">
+            <label for="inputVol" class="control-label col-xs-2">Volume</label>
+            <div class="col--10">
+              <input type="text" class="style-4" id="inputVol" name="inputVol"
+              placeholder="Vol(Leave blank if none)">
+            </div>
+          </div>
+          <!-- issue -->
+          <div class="form-group">
+            <label for="inputIssue" class="control-label col-xs-2">Issue</label>
+            <div class="col--10">
+              <input type="text" class="style-4" id="inputIssue" name="inputIssue"
+              placeholder="Issue(Leave blank if none)">
+            </div>
+          </div>
+          <!-- start page -->
+          <div class="form-group">
+            <label for="inputStartPg" class="control-label col-xs-2">Start Page</label>
+            <div class="col--10">
+              <input type="text" class="style-4" id="inputStartPg" name="inputStartPg"
+              placeholder="Start Page(Leave blank if none)">
+            </div>
+          </div>
+          <!-- end page -->
+          <div class="form-group">
+            <label for="inputEndPg" class="control-label col-xs-2">End Page</label>
+            <div class="col--10">
+              <input type="text" class="style-4" id="inputEndPg" name="inputEndPg"
+              placeholder="End Page(Leave blank if none)">
+            </div>
+          </div>
           <!-- file upload -->
           <div class="form-group">
             <label for="inputFile" class="control-label col-xs-2">PDF file</label>
@@ -81,18 +156,28 @@
       </div>
     </div>
     <?php require PROJ_PATH.'/includes/footer.php'; ?>
+
+    <script>
+    // radio button toggle
+      $(document).ready(function() {
+        $('#jourInfo').hide();
+        $('#confInfo').hide();
+        $('#inputConfRadio').click(function(){
+          if ($('#inputConfRadio').is(':checked')) {
+            $('#inputJourRadio').prop('checked',false);
+            $('#inputJourRadio').val('false');
+            $('#jourInfo').hide();
+            $('#confInfo').show();
+          }
+        });
+        $('#inputJourRadio').click(function(){
+          if ($('#inputJourRadio').is(':checked')) {
+            $('#inputConfRadio').prop('checked',false);
+            $('#jourInfo').show();
+            $('#confInfo').hide();
+          }
+        });
+      });
+    </script>
   </body>
 </html>
-
-<?php
-
-  // start_pg
-  // end_pg
-  // impact_factor
-
-  // journal
-    // vol
-    // issue
-  // conference
-  // authors
-?>

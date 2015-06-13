@@ -2,7 +2,7 @@
 <div class="page">
   <div class="navbar">
     <div class="navbar-inner">
-      <a class="brand" href="#">SKAP</a>
+      <a class="brand" href="#">SUNY Publications</a>
       <ul class="nav">
         <li><a href="index.php">Home</a></li>
         <li><a href="add_publication.php">Add Publication</a></li>
