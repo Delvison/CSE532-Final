@@ -213,13 +213,17 @@ function upload_file($user_id)
   // sample filename: 1140732936-filename.jpg
   $uploadFilename = create_unique_filename($uploadsDirectory,
   $_FILES[$fieldname]['name']);
+  //check if temp file exists
+  file_exists($_FILES[$fieldname]['tmp_name'])
+    or error('Temp file not uploaded', $uploadForm, FALSE,5);
   //echo "<br/>upload_filename: ". $uploadFilename;
   // move the file to its final location with unique filename
   // ensure that proper permissions are set:
   // sudo chown -R www-data:www-data /var/www
   @move_uploaded_file($_FILES[$fieldname]['tmp_name'], $uploadFilename)
-    or error('receiving directory insuffiecient permission', $uploadForm,
-    TRUE, 5);
+    or error('receiving directory insuffiecient permission for '.
+    $_FILES[$fieldname]['tmp_name'].' under filename '.$uploadFilename , $uploadForm,
+    FALSE, 5);
   // image successfully received
   // TODO: redirect appropriately
   return $uploadFilename;

@@ -17,6 +17,7 @@ ini_set('display_startup_errors',1);
 ini_set('display_errors',1);
 error_reporting(-1);
 
+echo("test");
 try {
   // get params
   $artTitle = $_POST['inputArtTitle'];
@@ -29,31 +30,34 @@ try {
   $issue = 'NULL';
   $startPg = 'NULL';
   $endPg = 'NULL';
+  $impact_factor = 'NULL';
 
   if (isset($_POST['inputVol'])) $vol = $_POST['inputVol'];
   if (isset($_POST['inputIssue'])) $issue = $_POST['inputIssue'];
   if (isset($_POST['inputStartPg'])) $startPg = $_POST['inputStartPg'];
   if (isset($_POST['inputEndPg'])) $endPg = $_POST['inputEndPg'];
+  if (isset($_POST['inputImpact'])) $impact_factor = $_POST['inputImpact'];
 
   // upload file
   $file_path = upload_file($user);
 
-  // // get authors
+  // get authors
   $authors_array = explode(",",$authors);
 
   //if publication was added and file was uploaded
-  if ( add_publication($artTitle, $abstract, $pubDate, $user)
-      && is_null($file_path)
+  if ( add_publication($artTitle, $abstract, $pubDate, $user) && !is_null($file_path) )
   {
     // get publication id
-    $pub_id = get_publication_id($artTitle);
+    $pub_id = get_publication_id($artTitle,$pubDate);
+
+    echo 'id: '.$pub_id;
 
     // add metadata
-    add_publication_metadata($vol,,$issue,$startPg,$endPg,$country,$file_path);
+    add_publication_metadata($vol,$issue,$startPg,$endPg,$impact_factor,$country,$file_path);
     // add authors
-    add_publication_authors($authors_array);
+    add_publication_authors($pub_id,$authors_array);
     // check if a conference or journal
-    if (isset($_POST['inputConfRadio']))
+    if (isset($_POST['inputConfRadio']) )
     {
       $confName = $_POST['inputConfName'];
       $confDate = $_POST['inputConfDate'];
@@ -65,11 +69,14 @@ try {
     }
     header("Location: ../views/view_all.php?status=success");
   } else {
+    echo("something failed");
     debug("error adding publication");
   }
 } catch (Exception $e) {
   //TODO: handle errors correctly
   debug($e->getMessage());
 }
+
+
 
 ?>

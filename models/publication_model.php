@@ -50,7 +50,7 @@ $impact_factor,$country, $filepath)
   $publications_db);
 }
 
-function add_publication_authors($pubId,$authors,$article_title)
+function add_publication_authors($pubId,$authors)
 {
   // global variables from config/db_config.php
   global $db_hostname; // mysql database hostname
@@ -63,13 +63,14 @@ function add_publication_authors($pubId,$authors,$article_title)
   $query = "";
   foreach($authors as $author)
   {
-    $query .= "INSERT into $author_tb (name) VALUES ('$author');";
-    $query .= "INSERT into $is_author_of_tb (id,author,publication) VALUES ".
-              "(NULL,$author,$pubId);";
+    $query = "INSERT IGNORE into $author_tb (name) VALUES ('$author');";
+    send_query($query, $db_hostname, $db_user, $db_password,
+    $publications_db);
+    $query = "INSERT into $is_author_of_tb (id,author,publication) VALUES ".
+              "(NULL,'$author','$pubId');";
+    send_query($query, $db_hostname, $db_user, $db_password,
+    $publications_db);
   }
-  // called from lib/db_helper.php
-  send_query($query, $db_hostname, $db_user, $db_password,
-  $publications_db);
 }
 
 function add_conference($pubId,$confName,$confDate)
@@ -84,11 +85,11 @@ function add_conference($pubId,$confName,$confDate)
   if (is_null($confName)) $confName = 'NULL';
   if (is_null($confDate)) $confDate = 'NULL';
 
+  $query = "INSERT IGNORE into $conference_tb (name,start_date) VALUES ".
+            "('$confName','$confDate');";
+  send_query($query,$db_hostname,$db_user,$db_password,$publications_db);
   $query = "INSERT into $is_category_tb (publication,journal,conference) ".
           "VALUES ('$pubId',NULL,'$confName');";
-  $query .= "INSERT into $conference_tb (name,start_date) VALUES ".
-            "('$confName','$confDate');";
-
   send_query($query,$db_hostname,$db_user,$db_password,$publications_db);
 }
 
@@ -104,7 +105,7 @@ function add_journal($pubId,$jourName,$isbn)
   if (is_null($jourName)) $jourName = 'NULL';
   if (is_null($isbn)) $isbn = 'NULL';
 
-  $query = "INSERT into $is_category_tb (publication,journal,conference) ".
+  $query = "INSERT IGNORE into $is_category_tb (publication,journal,conference) ".
           "VALUES ('$pubId','$jourName',NULL);";
   $query .= "INSERT into $journal_tb (name,category,isbn) VALUES ".
             "('$jourName',NULL,'$isbn');";
@@ -112,7 +113,7 @@ function add_journal($pubId,$jourName,$isbn)
   send_query($query,$db_hostname,$db_user,$db_password,$publications_db);
 }
 
-function get_publication_id($title)
+function get_publication_id($title,$pubDate)
 {
   // global variables from config/db_config.php
   global $db_hostname; // mysql database hostname
@@ -121,7 +122,7 @@ function get_publication_id($title)
   global $publications_db; // database of publications
   global $publication_tb;
 
-  $query = "SELECT id from $publication_tb WHERE title='$title';";
+  $query = "SELECT id from $publication_tb WHERE title='$title' and date_published='$pubDate';";
   $result = receive_query($query, $db_hostname,$db_user,
             $db_password,$publications_db)->fetch_array();
   return $result[0];
