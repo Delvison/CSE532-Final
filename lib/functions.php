@@ -226,7 +226,7 @@ function upload_file($user_id)
     FALSE, 5);
   // image successfully received
   // TODO: redirect appropriately
-  return $uploadFilename;
+  return str_replace(PROJ_PATH,"", $uploadFilename);
 }
 
 /**

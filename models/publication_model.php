@@ -44,7 +44,7 @@ $impact_factor,$country, $filepath)
   if (is_null($country)) $country = 'NULL';
 
   $query = "INSERT into $publication_metadata_tb (id,vol,issue,start_pg,end_pg, impact_factor,country, file_path) VALUES ".
-              "(NULL,$vol,$issue,$start_pg,$end_pg,$impact_factor,'$country','$filepath');";
+              "(NULL,'$vol','$issue','$start_pg','$end_pg','$impact_factor','$country','$filepath');";
   // called from lib/db_helper.php
   return send_query($query, $db_hostname, $db_user, $db_password,
   $publications_db);
@@ -105,12 +105,13 @@ function add_journal($pubId,$jourName,$isbn)
   if (is_null($jourName)) $jourName = 'NULL';
   if (is_null($isbn)) $isbn = 'NULL';
 
+  $query = "INSERT into $journal_tb (name,category,isbn) VALUES ".
+            "('$jourName',NULL,'$isbn');";
+  send_query($query,$db_hostname,$db_user,$db_password,$publications_db);
   $query = "INSERT IGNORE into $is_category_tb (publication,journal,conference) ".
           "VALUES ('$pubId','$jourName',NULL);";
-  $query .= "INSERT into $journal_tb (name,category,isbn) VALUES ".
-            "('$jourName',NULL,'$isbn');";
-
   send_query($query,$db_hostname,$db_user,$db_password,$publications_db);
+
 }
 
 function get_publication_id($title,$pubDate)
@@ -122,10 +123,103 @@ function get_publication_id($title,$pubDate)
   global $publications_db; // database of publications
   global $publication_tb;
 
-  $query = "SELECT id from $publication_tb WHERE title='$title' and date_published='$pubDate';";
+  $query = "SELECT id from $publication_tb WHERE title='$title' and publication_date='$pubDate';";
   $result = receive_query($query, $db_hostname,$db_user,
             $db_password,$publications_db)->fetch_array();
   return $result[0];
+}
+
+function get_publication()
+{
+  // global variables from config/db_config.php
+  global $db_hostname; // mysql database hostname
+  global $db_user; // mysql user
+  global $db_password; // mysql password
+  global $publications_db; // database of publications
+  global $publication_tb;
+  global $publication_metadata_tb;
+  global $is_author_of_tb;
+  global $is_category_tb;
+  global $journal_tb;
+  global $conference_tb;
+
+  // query for all publications
+  $query = "SELECT ".
+  "$publication_tb.title,".
+  "$publication_tb.abstract,".
+  "$publication_tb.publication_date,".
+  "$publication_tb.user_posted, ".
+  "$publication_metadata_tb.vol,".
+  "$publication_metadata_tb.issue,".
+  "$publication_metadata_tb.start_pg,".
+  "$publication_metadata_tb.end_pg,".
+  "$publication_metadata_tb.impact_factor,".
+  "$publication_metadata_tb.country,".
+  "$publication_metadata_tb.file_path,".
+  "$is_author_of_tb.author,".
+  "$is_category_tb.journal,".
+  "$is_category_tb.conference ".
+  "FROM $publication_tb, $publication_metadata_tb, $is_author_of_tb, $is_category_tb".
+  " WHERE $publication_tb.id = $publication_metadata_tb.id".
+  " AND $publication_tb.id = $is_author_of_tb.publication".
+  " AND $publication_tb.id = $is_category_tb.publication";
+
+  //echo $query;
+  $receive = receive_query($query,$db_hostname,$db_user,$db_password,
+             $publications_db);
+  $str = '';
+  $title = '';
+  $abstract = '';
+  $pub_date = '';
+  $user_posted = '';
+  $vol = '';
+  $issue = '';
+  $start_pg = '';
+  $end_pg = '';
+  $impact_factor = '';
+  $country = '';
+  $file_path = '';
+  $journal = '';
+  $conference = '';
+  $authors = '';
+  while ($result = $receive->fetch_assoc())
+  {
+    foreach ($result as $val)
+    {
+      switch($val)
+      {
+        case $result['title']: $title = $val; break;
+        case $result['abstract']: $abstract = $val; break;
+        case $result['publication_date']: $pub_date = $val; break;
+        case $result['user_posted']: $user_posted = $val; break;
+        case $result['vol']: $vol = $val; break;
+        case $result['issue']: $issue = $val; break;
+        case $result['start_pg']: $start_pg = $val; break;
+        case $result['end_pg']: $end_pg = $val; break;
+        case $result['impact_factor']: $impact_factor = $val; break;
+        case $result['country']: $country = $val; break;
+        case $result['file_path']: $file_path = $val; break;
+        case $result['conference']: $conference = $val; break;
+        case $result['journal']: $journal = $val; break;
+        case $result['author']: $authors .= $val.", "; break;
+      }
+    }
+  }
+
+  $str .= "<h3>Title:</h3> $title <a href='../$file_path'> PDF</a></br>";
+  $str .= "<h3>Authors:</h3> ".substr($authors,0,-2)."</br>";
+  $str .= "<h3>Abstract:</h3> $abstract</br>";
+  $str .= "<h3>Date Published:</h3> $pub_date</br>";
+  $str .= "<h3>User Posted:</h3> $user_posted</br>";
+  $str .= "<h3>Vol:</h3> $vol</br>";
+  $str .= "<h3>Issue:</h3> $issue</br>";
+  $str .= "<h3>Pages:</h3> $start_pg - $end_pg</br>";
+  $str .= "<h3>Impact Factor:</h3> $impact_factor</br>";
+  $str .= "<h3>Country:</h3> $country</br>";
+  if (!is_null($conference)) $str .= "<h3>Conference:</h3> $conference</br>";
+  if (!is_null($journal)) $str .= "<h3>Journal:</h3> $journal</br>";
+
+  echo $str;
 }
 
 ?>

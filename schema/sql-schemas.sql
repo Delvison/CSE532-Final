@@ -26,11 +26,11 @@ CREATE TABLE Publication (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
       ON UPDATE CASCADE;
 
 CREATE TABLE Publication_metadata (id INT NOT NULL PRIMARY KEY AUTO_INCREMENT,
-  vol VARCHAR(10),
-  issue VARCHAR(10),
+  vol VARCHAR(30),
+  issue VARCHAR(30),
   start_pg INT,
   end_pg INT,
-  impact_factor FLOAT,
+  impact_factor VARCHAR(11),
   country VARCHAR(50),
   file_path TINYTEXT
 );

@@ -45,7 +45,8 @@ try {
   $authors_array = explode(",",$authors);
 
   //if publication was added and file was uploaded
-  if ( add_publication($artTitle, $abstract, $pubDate, $user) && !is_null($file_path) )
+  if ( add_publication($artTitle, $abstract, $pubDate, $user)
+      && !is_null($file_path) )
   {
     // get publication id
     $pub_id = get_publication_id($artTitle,$pubDate);
@@ -53,7 +54,8 @@ try {
     echo 'id: '.$pub_id;
 
     // add metadata
-    add_publication_metadata($vol,$issue,$startPg,$endPg,$impact_factor,$country,$file_path);
+    add_publication_metadata($vol,$issue,$startPg,$endPg,$impact_factor,
+    $country,$file_path);
     // add authors
     add_publication_authors($pub_id,$authors_array);
     // check if a conference or journal

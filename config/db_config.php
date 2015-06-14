@@ -13,8 +13,6 @@
 	$db_password = "sunyk";
 
   /* DATABASES */
-  $members_db = "secure_login";
-  $idea_db = "idea_db";
   $publications_db = "publications_db";
 
   /* TABLES */
