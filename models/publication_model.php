@@ -145,6 +145,7 @@ function get_publication()
 
   // query for all publications
   $query = "SELECT ".
+  "$publication_tb.id,".
   "$publication_tb.title,".
   "$publication_tb.abstract,".
   "$publication_tb.publication_date,".
@@ -168,6 +169,7 @@ function get_publication()
   $receive = receive_query($query,$db_hostname,$db_user,$db_password,
              $publications_db);
   $str = '';
+  $id = '';
   $title = '';
   $abstract = '';
   $pub_date = '';
@@ -188,6 +190,7 @@ function get_publication()
     {
       switch($val)
       {
+        case $result['id']: $id = $val; break;
         case $result['title']: $title = $val; break;
         case $result['abstract']: $abstract = $val; break;
         case $result['publication_date']: $pub_date = $val; break;
@@ -206,6 +209,10 @@ function get_publication()
     }
   }
 
+  // produce edit link if publication belongs to the user
+  if (isset($_SESSION['username']) && $user_posted == $_SESSION['username']){
+    $str .= "<a href=\"edit_publication.php?id=$id\">Edit Publication</a>";
+  }
   $str .= "<h3>Title:</h3> $title <a href='../$file_path'> PDF</a></br>";
   $str .= "<h3>Authors:</h3> ".substr($authors,0,-2)."</br>";
   $str .= "<h3>Abstract:</h3> $abstract</br>";
