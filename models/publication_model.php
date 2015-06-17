@@ -184,6 +184,7 @@ function get_publication($id)
   $journal = '';
   $conference = '';
   $authors = '';
+  $authors_array = array();
   while ($result = $receive->fetch_assoc())
   {
     foreach ($result as $val)
@@ -204,17 +205,20 @@ function get_publication($id)
         case $result['file_path']: $file_path = $val; break;
         case $result['conference']: $conference = $val; break;
         case $result['journal']: $journal = $val; break;
-        case $result['author']: $authors .= $val.", "; break;
+        case $result['author']: array_push($authors_array, $val); break;
       }
     }
   }
+
+  $authors_array = array_unique($authors_array);
+  foreach($authors_array as $a){ $authors .= $a . ','; }
 
   // produce edit link if publication belongs to the user
   if (isset($_SESSION['username']) && $user_posted == $_SESSION['username']){
     $str .= "<a href=\"edit_publication.php?id=$id\">Edit Publication</a>";
   }
   $str .= "<h3>Title:</h3> $title <a href='../$file_path'> PDF</a></br>";
-  $str .= "<h3>Authors:</h3> ".substr($authors,0,-2)."</br>";
+  $str .= "<h3>Authors:</h3> ".substr($authors,0,-1)."</br>";
   $str .= "<h3>Abstract:</h3> $abstract</br>";
   $str .= "<h3>Date Published:</h3> $pub_date</br>";
   $str .= "<h3>User Posted:</h3> $user_posted</br>";

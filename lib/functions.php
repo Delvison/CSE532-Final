@@ -125,17 +125,41 @@ function all_publications_table()
   global $publications_db; // database of publications
   global $publication_tb;
   global $publication_metadata_tb;
+  global $is_author_of_tb;
+  global $is_category_tb;
+  global $journal_tb;
+  global $conference_tb;
 
   // query for all publications
+  // $query = "SELECT ".
+  // "$publication_tb.id,".
+  // "$publication_tb.title,".
+  // "$publication_tb.abstract,".
+  // "$publication_tb.publication_date,".
+  // "$publication_metadata_tb.country,".
+  // "$publication_tb.user_posted ".
+  // "FROM $publication_tb, $publication_metadata_tb".
+  // " WHERE $publication_tb.id = $publication_metadata_tb.id;";
+
   $query = "SELECT ".
   "$publication_tb.id,".
   "$publication_tb.title,".
   "$publication_tb.abstract,".
   "$publication_tb.publication_date,".
+  "$publication_tb.user_posted, ".
+  "$publication_metadata_tb.vol,".
+  "$publication_metadata_tb.issue,".
+  "$publication_metadata_tb.start_pg,".
+  "$publication_metadata_tb.end_pg,".
+  "$publication_metadata_tb.impact_factor,".
   "$publication_metadata_tb.country,".
-  "$publication_tb.user_posted ".
-  "FROM $publication_tb, $publication_metadata_tb".
-  " WHERE $publication_tb.id = $publication_metadata_tb.id;";
+  "$is_author_of_tb.author,".
+  "$is_category_tb.journal,".
+  "$is_category_tb.conference ".
+  "FROM $publication_tb, $publication_metadata_tb, $is_author_of_tb, $is_category_tb".
+  " WHERE $publication_tb.id = $publication_metadata_tb.id".
+  " AND $publication_tb.id = $is_author_of_tb.publication".
+  " AND $publication_tb.id = $is_category_tb.publication";
 
   $receive = receive_query($query,$db_hostname,$db_user,$db_password,
             $publications_db);
@@ -143,19 +167,22 @@ function all_publications_table()
   $str = "<table border='1' class='table mytable' id='mytable' name='mytable
 
   </tbody>'>";
-  $str .= "<tr>".
-  "<th>Article Title</th>".
-  "<th>Abstract</th>".
-  "<th>Date Published</th>".
-  "<th>Country</th>".
-  "<th>User_Posted</th>".
-  "</tr>";
+  // $str .= "<tr>".
+  // "<th>Article Title</th>".
+  // "<th>Abstract</th>".
+  // "<th>Date Published</th>".
+  // "<th>Country</th>".
+  // "<th>User_Posted</th>".
+  // "</tr>";
   while ($result = $receive->fetch_assoc())
   {
     $str.= '<tbody class="fbody"><tr>';
-    // var_dump($result);
+
     foreach($result as $val)
     {
+      if (strcmp($val,$result['abstract']) == 0 && strlen($val) >= 100 ) {
+        $val = substr($val,0,100) . '...';
+      }
       if (strcmp($val,$result['title']) == 0)
       {
         $str.= "<td><a href='view_publication.php?t=".
