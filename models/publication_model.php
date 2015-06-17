@@ -129,7 +129,7 @@ function get_publication_id($title,$pubDate)
   return $result[0];
 }
 
-function get_publication()
+function get_publication($id)
 {
   // global variables from config/db_config.php
   global $db_hostname; // mysql database hostname
@@ -161,9 +161,9 @@ function get_publication()
   "$is_category_tb.journal,".
   "$is_category_tb.conference ".
   "FROM $publication_tb, $publication_metadata_tb, $is_author_of_tb, $is_category_tb".
-  " WHERE $publication_tb.id = $publication_metadata_tb.id".
-  " AND $publication_tb.id = $is_author_of_tb.publication".
-  " AND $publication_tb.id = $is_category_tb.publication";
+  " WHERE $id = $publication_metadata_tb.id".
+  " AND $id = $is_author_of_tb.publication".
+  " AND $id = $is_category_tb.publication";
 
   //echo $query;
   $receive = receive_query($query,$db_hostname,$db_user,$db_password,

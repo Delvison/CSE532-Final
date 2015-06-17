@@ -20,8 +20,8 @@
   <body>
     <?php require PROJ_PATH.'/includes/navbar.php'; ?>
     <div>
-      <?php get_publication(); ?>
+      <?php get_publication($_GET['t']); ?>
     </div>
-      <?php require PROJ_PATH.'/includes/footer.php'; ?>
+    <?php require PROJ_PATH.'/includes/footer.php'; ?>
   </body>
 </html>

@@ -128,6 +128,7 @@ function all_publications_table()
 
   // query for all publications
   $query = "SELECT ".
+  "$publication_tb.id,".
   "$publication_tb.title,".
   "$publication_tb.abstract,".
   "$publication_tb.publication_date,".
@@ -157,9 +158,10 @@ function all_publications_table()
     {
       if (strcmp($val,$result['title']) == 0)
       {
-        $str.= "<td><a href='view_publication.php?t=$val'>$val</a></td>";
+        $str.= "<td><a href='view_publication.php?t=".
+        $result['id']."'>$val</a></td>";
       } else {
-        $str.= "<td>".$val."</td>";
+        if (strcmp($result['id'], $val) != 0) $str.= "<td>".$val."</td>";
       }
     }
     $str.= '</tr></tbody>';
