@@ -146,7 +146,7 @@ function all_publications_table()
   "$publication_tb.title,".
   "$publication_tb.abstract,".
   "$publication_tb.publication_date,".
-  "$publication_tb.user_posted, ".
+  //"$publication_tb.user_posted, ".
   "$publication_metadata_tb.vol,".
   "$publication_metadata_tb.issue,".
   "$publication_metadata_tb.start_pg,".
@@ -167,13 +167,20 @@ function all_publications_table()
   $str = "<table border='1' class='table mytable' id='mytable' name='mytable
 
   </tbody>'>";
-  // $str .= "<tr>".
-  // "<th>Article Title</th>".
-  // "<th>Abstract</th>".
-  // "<th>Date Published</th>".
-  // "<th>Country</th>".
-  // "<th>User_Posted</th>".
-  // "</tr>";
+  $str .= "<tr>".
+  "<th>Article Title</th>".
+  "<th>Abstract</th>".
+  "<th>Date Published</th>".
+  "<th>Volume</th>".
+  "<th>Issue</th>".
+  "<th>Start Page</th>".
+  "<th>End Page</th>".
+  "<th>Impact Factor</th>".
+  "<th>Country</th>".
+  "<th>Author(s)</th>".
+  "<th>Journal</th>".
+  "<th>Conference</th>".
+  "</tr>";
   while ($result = $receive->fetch_assoc())
   {
     $str.= '<tbody class="fbody"><tr>';

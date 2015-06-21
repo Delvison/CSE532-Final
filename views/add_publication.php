@@ -183,6 +183,7 @@
           </div>
           <input type="hidden" name="inputUser" value='<?php echo
            $_SESSION['username']; ?>'>
+           <input type="hidden" name="action" value='add'>
           <!-- submit btn -->
           <div class="form-group">
             <div class="col-xs-offset-2 col-xs-10">

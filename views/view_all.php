@@ -20,7 +20,7 @@
     <?php require PROJ_PATH.'/includes/navbar.php'; ?>
     <div class="center">
       <input type="text" class="span5 search-query" placeholder="Filter..."
-      name="searchInput" id="searchInput">
+      name="searchInput" id="searchInput" style="height:30px">
     </input>
       <!-- <button type="submit" class="btn"><i class="icon-search"></i></button> -->
     </div>

@@ -36,12 +36,12 @@ $impact_factor,$country, $filepath)
   global $publication_metadata_tb;
 
   // defaults
-  if (is_null($vol)) $vol = 'NULL';
-  if (is_null($issue)) $issue = 'NULL';
+  if (is_null($vol)) $vol = '-';
+  if (is_null($issue)) $issue = '-';
   if (is_null($start_pg)) $start_pg = 0;
   if (is_null($end_pg)) $end_pg = 0;
   if (is_null($impact_factor)) $impact_factor = 0.0;
-  if (is_null($country)) $country = 'NULL';
+  if (is_null($country)) $country = '-';
 
   $query = "INSERT into $publication_metadata_tb (id,vol,issue,start_pg,end_pg, impact_factor,country, file_path) VALUES ".
               "(NULL,'$vol','$issue','$start_pg','$end_pg','$impact_factor','$country','$filepath');";
@@ -212,13 +212,35 @@ function get_publication($id)
 
   $authors_array = array_unique($authors_array);
   foreach($authors_array as $a){ $authors .= $a . ','; }
+  $authors = substr($authors,0,-1);
 
   // produce edit link if publication belongs to the user
-  if (isset($_SESSION['username']) && $user_posted == $_SESSION['username']){
-    $str .= "<a href=\"edit_publication.php?id=$id\">Edit Publication</a>";
+  if (isset($_SESSION['username']) && $user_posted == $_SESSION['username'])
+  {
+    $str .= "<form id='edit' action='edit_publication.php' method='POST'>";
+    $str .= "<input type='hidden' name='inputArtTitle' value='$title'>";
+    $str .= "<input type='hidden' name='inputAbstract' value='$abstract'>";
+    $str .= "<input type='hidden' name='inputPubDate' value='$pub_date'>";
+    $str .= "<input type='hidden' name='inputAuthors' value='$authors'>";
+    $str .= "<input type='hidden' name='inputAuthors' value='$authors'>";
+    $str .= "<input type='hidden' name='inputCountry' value='$country'>";
+    $str .= "<input type='hidden' name='inputConfName' value='$conference'>";
+    $str .= "<input type='hidden' name='inputConfDate' value='$conference'>"; //fix
+    $str .= "<input type='hidden' name='inputJourName' value='$journal'>";
+    $str .= "<input type='hidden' name='inputISBN' value='$journal'>"; // fix
+    $str .= "<input type='hidden' name='inputVol' value='$vol'>";
+    $str .= "<input type='hidden' name='inputIssue' value='$issue'>";
+    $str .= "<input type='hidden' name='inputStartPg' value='$start_pg'>";
+    $str .= "<input type='hidden' name='inputEndPg' value='$end_pg'>";
+    $str .= "<input type='hidden' name='inputImpact' value='$impact_factor'>";
+    $str .= "<input type='hidden' name='inputFile' value='$file_path'>";
+    $str .= "<input type='hidden' name='inputUser' value='$user_posted'>";
+    $str .= "<a href=\"edit_publication.php?id=$id\" onclick=\"$(this).closest('form').submit(); return false;\">Edit Publication</a>";
+    $str .= "</form>";
   }
+
   $str .= "<h3>Title:</h3> $title <a href='../$file_path'> PDF</a></br>";
-  $str .= "<h3>Authors:</h3> ".substr($authors,0,-1)."</br>";
+  $str .= "<h3>Authors:</h3>$authors</br>";
   $str .= "<h3>Abstract:</h3> $abstract</br>";
   $str .= "<h3>Date Published:</h3> $pub_date</br>";
   $str .= "<h3>User Posted:</h3> $user_posted</br>";
