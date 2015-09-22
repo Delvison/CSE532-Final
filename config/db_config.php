@@ -9,8 +9,8 @@
   // define('DB_PASSWORD', 'suny');
   /* PARAMETERS */
   $db_hostname = "127.0.0.1";
-	$db_user= "root";
-	$db_password = "sunyk";
+  $db_user= "root";
+  $db_password = "sunyk";
 
   /* DATABASES */
   $publications_db = "publications_db";
